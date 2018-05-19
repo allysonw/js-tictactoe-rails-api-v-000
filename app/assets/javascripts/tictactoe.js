@@ -99,7 +99,7 @@ function winningCombination() {
    [0,4,8],  // Diagonal from top left to bottom right
    [6,4,2]   // Diagonal from bottom left to top right
   ]
-  
+
   let squares = board_to_array()
 
   for (const combination of WIN_COMBINATIONS) {
@@ -146,17 +146,18 @@ function board_to_array() {
 // Load the previous games and create buttons for each
 function previousGames() {
   $('#games').empty();
-  let button, gameNumber;
+  let button, gameNumber, updatedAt
 
   $.get('/games', function(response) {
     for (let game of response['data']) {
-      gameNumber = 'Game #' + game['id']
+      gameNumber = 'Game #' + game['id'] + " "
+      updatedAt = '- Last saved at: ' + moment(game['attributes']['created-at']).format('MMMM Do YYYY, h:mm a') + " "
 
       button = $('<button></button>').text('Load Game')
       button.data('game_id', game['id'])
       button.addClass('load_game')
 
-      $('#games').append(gameNumber, button, '<br>')
+      $('#games').append(gameNumber, updatedAt, button, '<br>')
     }
   }).done(attachPreviousButtonListeners);
 }
